@@ -1,0 +1,9 @@
+user:
+    name: mullet2 
+
+servers:
+    -   name: uwcsnet
+        address: irc.uwcs.co.uk
+        port: 6667
+        channels:
+            -   #jizz

@@ -1,0 +1,50 @@
+channel name prefixes: # + & !
+
+core:
+    custom commands
+    store pipe status - eg network
+    Silver's note - +m +q people may not work for channels, patch pircbot
+
+view predicates:
+    multi-line folding - anti-manlir
+
+commands:
+    pm support
+        - open new window
+        - update pm windows on change nick 
+    action support (/me)
+
+    pings
+        - double pings
+    away status
+    cross posting - alarm
+    lock/unlock topic - NOT IN IRSSI DEFAULT
+    logs
+    person history
+        - first saw/last saw
+    urls plugin
+    arbitrary jvm script execution
+    automatic speling correction
+    help/docs
+    ticker
+    ctcp
+    raw command (/quote)
+    gc command
+
+ui:
+    keep entered text when moving windows
+    implement window management
+        - tiling algorithms
+    nick list
+    Add colour support 
+        - irchelp.org, ANSI colour escape characters
+        - reading colors from other clients
+        - color'd output
+    nick modes (@ + etc.)
+    fix massive graphics corruption
+    grey out people in scrollback when they leave
+    pasting safety
+    list of windows
+    
+test:
+    multiple networks
