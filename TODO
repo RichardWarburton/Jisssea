@@ -8,12 +8,23 @@ core:
 view predicates:
     multi-line folding - anti-manlir
 
-commands:
+To Generalise:
+    Options Parsing
+    default channels
+
+Test:
     pm support
         - open new window
         - update pm windows on change nick 
     action support (/me)
 
+commands:
+
+    channel control:
+        - op/deop
+        - voice/devoice
+        - kick/ban
+    reconnect
     pings
         - double pings
     away status
