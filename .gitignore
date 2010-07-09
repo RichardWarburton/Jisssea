@@ -1,0 +1,8 @@
+# eclipse crap
+.classpath
+.project
+.settings/
+
+# Don't need bin dir
+bin/
+example.log
