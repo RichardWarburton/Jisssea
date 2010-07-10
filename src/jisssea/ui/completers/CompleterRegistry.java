@@ -20,7 +20,7 @@ public class CompleterRegistry {
 
 	private CompleterRegistry() {
 		listeners = new ArrayList<Completer>();
-		final String[] names = { "jizzsea.ui.completers.HistoryCompleter", "jizzsea.ui.completers.ShortcutsCompleter", };
+		final String[] names = { "jisssea.ui.completers.HistoryCompleter", "jisssea.ui.completers.ShortcutsCompleter", };
 		for (String name : names) {
 			try {
 				Class<?> cls = Class.forName(name);

@@ -104,12 +104,12 @@ public class Controller {
 
 	private List<Command> loadCommands() {
 		List<Command> commands = new ArrayList<Command>();
-		final String[] names = { "jizzsea.controller.commands.JoinCommand", "jizzsea.controller.commands.PartCommand",
-				"jizzsea.controller.commands.WindowCommand", "jizzsea.controller.commands.PartReceivedCommand",
-				"jizzsea.controller.commands.TopicCommand", "jizzsea.controller.commands.SayCommand", "jizzsea.controller.commands.NickCommand",
-				"jizzsea.controller.commands.FilterCommand", "jizzsea.controller.commands.AliasCommand",
-				"jizzsea.controller.commands.NickChangedCommand", "jizzsea.controller.commands.PMCommand",
-				"jizzsea.controller.commands.ActionCommand", };
+		final String[] names = { "jisssea.controller.commands.JoinCommand", "jisssea.controller.commands.PartCommand",
+				"jisssea.controller.commands.WindowCommand", "jisssea.controller.commands.PartReceivedCommand",
+				"jisssea.controller.commands.TopicCommand", "jisssea.controller.commands.SayCommand", "jisssea.controller.commands.NickCommand",
+				"jisssea.controller.commands.FilterCommand", "jisssea.controller.commands.AliasCommand",
+				"jisssea.controller.commands.NickChangedCommand", "jisssea.controller.commands.PMCommand",
+				"jisssea.controller.commands.ActionCommand", };
 		for (String name : names) {
 			try {
 				Class<?> cls = Class.forName(name);
