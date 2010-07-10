@@ -24,7 +24,6 @@ commands:
         - op/deop
         - voice/devoice
         - kick/ban
-    reconnect
     pings
         - double pings
     away status
@@ -34,12 +33,12 @@ commands:
     person history
         - first saw/last saw
     urls plugin
-    arbitrary jvm script execution
-    automatic speling correction
+        - see/not seen
     help/docs
     ticker
     ctcp
     raw command (/quote)
+    reconnect
     gc command
 
 ui:
