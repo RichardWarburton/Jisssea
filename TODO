@@ -1,10 +1,8 @@
 channel name prefixes: # + & !
 
 core:
-    store pipe status - eg network/channel
-    Auto loading plugins - Commands, Completers, ViewPredicates
     Replace config with a perform
-            
+    Test cases
     Silver's note - +m +q people may not work for channels, patch pircbot
     Generalise Options Parsing for user commands
     	- Should return appropriate typesafe values (eg enums)
@@ -42,6 +40,7 @@ commands:
     ticker
     ctcp
     gc command
+    plugin loading/information reflection command
 
 ui:
     keep entered text when moving windows

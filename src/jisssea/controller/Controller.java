@@ -1,9 +1,8 @@
 package jisssea.controller;
 
 import static jisssea.util.CollectionsUtility.getMapKey;
+import static jisssea.util.PluginUtility.loadPlugins;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -103,28 +102,7 @@ public class Controller {
 	}
 
 	private List<Command> loadCommands() {
-		List<Command> commands = new ArrayList<Command>();
-		final String[] names = { "jisssea.controller.commands.JoinCommand", "jisssea.controller.commands.PartCommand",
-				"jisssea.controller.commands.WindowCommand", "jisssea.controller.commands.PartReceivedCommand",
-				"jisssea.controller.commands.TopicCommand", "jisssea.controller.commands.SayCommand", "jisssea.controller.commands.NickCommand",
-				"jisssea.controller.commands.FilterCommand", "jisssea.controller.commands.AliasCommand",
-				"jisssea.controller.commands.NickChangedCommand", "jisssea.controller.commands.PMCommand",
-				"jisssea.controller.commands.ActionCommand", "jisssea.controller.commands.ControlCommand",
-				"jisssea.controller.commands.ReconnectCommand", "jisssea.controller.commands.RawCommand", };
-		for (String name : names) {
-			try {
-				Class<?> cls = Class.forName(name);
-				if (!cls.isInterface() && !Modifier.isAbstract(cls.getModifiers())) {
-					Command cmd = (Command) cls.newInstance();
-					commands.add(cmd);
-				} else {
-					// TODO: some error
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return commands;
+		return loadPlugins(Command.class, "bin", "jisssea.controller.commands");
 	}
 
 	public <T extends Command> T requestCommand(Class<T> cls) {
@@ -267,10 +245,4 @@ public class Controller {
 		pipe.window.hide();
 		pipes.values().remove(pipe);
 	}
-
-	/*
-	 * 
-	 * public void handle(String msg) { final Bot bot = reg.get("uwcsnet");
-	 * if(bot != null) bot.sendRawLine(msg); }
-	 */
 }

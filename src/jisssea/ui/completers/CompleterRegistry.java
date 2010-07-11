@@ -1,8 +1,8 @@
 package jisssea.ui.completers;
 
+import static jisssea.util.PluginUtility.loadPlugins;
+
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -19,30 +19,7 @@ public class CompleterRegistry {
 	private final List<Completer> listeners;
 
 	private CompleterRegistry() {
-		listeners = new ArrayList<Completer>();
-		final String[] names = { "jisssea.ui.completers.HistoryCompleter", "jisssea.ui.completers.ShortcutsCompleter", };
-		for (String name : names) {
-			try {
-				Class<?> cls = Class.forName(name);
-				if (Arrays.asList(cls.getInterfaces()).contains(Completer.class)) {
-
-					if (cls.isEnum()) {
-						for (Object e : cls.getEnumConstants()) {
-							log.debug("Adding completer: " + e);
-							listeners.add((Completer) e);
-						}
-					} else {
-						Completer cmd = (Completer) cls.newInstance();
-						log.debug("Adding completer: " + name);
-						listeners.add(cmd);
-					}
-				} else {
-					log.error("Unable to load completer: " + name);
-				}
-			} catch (Exception e) {
-				log.error("Error initialising completer: ", e);
-			}
-		}
+		listeners = loadPlugins(Completer.class, "bin", "jisssea.ui.completers");
 	}
 
 	public void addCompleters(JTextField field) {
