@@ -13,48 +13,53 @@ import jisssea.ui.DisplayWindow;
 public class Pipe {
 
 	private final int cacheSize;
-	
+
 	private final List<Message> messages;
-	
+
 	public final DisplayWindow window;
-	
+
 	public final List<ViewPredicate> predicates;
-	
+
 	public final Map<String, Object> stash;
-	
+
 	public DefaultPredicate getDefaultPredicate() {
+		return getPredicate(DefaultPredicate.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends ViewPredicate> T getPredicate(Class<T> clazz) {
 		for (ViewPredicate p : predicates) {
-			if (p instanceof DefaultPredicate) {
-				return (DefaultPredicate) p;
+			if (clazz.isInstance(p)) {
+				return (T) p;
 			}
 		}
 		return null;
 	}
-	
-	public Pipe(final int windowNumber, final int cacheSize,Controller handler ) {
+
+	public Pipe(final int windowNumber, final int cacheSize, Controller handler) {
 		super();
 		this.cacheSize = cacheSize;
-		this.window = new DisplayWindow(windowNumber,handler);
+		this.window = new DisplayWindow(windowNumber, handler);
 		this.messages = new ArrayList<Message>();
 		this.predicates = new ArrayList<ViewPredicate>();
 		this.stash = new HashMap<String, Object>();
 	}
-	
+
 	public void enQueue(final Message msg) {
 		messages.add(msg);
 	}
-	
+
 	/**
 	 * TODO: move to this message
+	 * 
 	 * @param offset
 	 * @param amount
 	 * @return
 	 */
-	public List<Message> request(final int offset,final int amount) {
-		int initialIndex = Math.max(0,messages.size()-(offset+cacheSize)),
-			finalIndex = Math.min(messages.size()-1,initialIndex + amount);
+	public List<Message> request(final int offset, final int amount) {
+		int initialIndex = Math.max(0, messages.size() - (offset + cacheSize)), finalIndex = Math.min(messages.size() - 1, initialIndex + amount);
 		List<Message> subList = messages.subList(initialIndex, finalIndex);
-		for(ViewPredicate pred:predicates) {
+		for (ViewPredicate pred : predicates) {
 			subList = pred.filter(subList);
 		}
 		return subList;
@@ -62,7 +67,7 @@ public class Pipe {
 
 	public List<Message> requestAll() {
 		List<Message> subList = new ArrayList<Message>(messages);
-		for(ViewPredicate pred:predicates) {
+		for (ViewPredicate pred : predicates) {
 			subList = pred.filter(subList);
 		}
 		return subList;

@@ -29,7 +29,7 @@ public class PMCommand extends RegexCommand {
 	protected void guardedAct(Matcher m, UserMessage msg, BotRegistry irc, Controller ctrl) {
 		final String target = m.group(1);
 		final String messageBody = m.group(2);
-		final Bot network = irc.getContext(target);
+		final Bot network = irc.getTargetContext(target);
 		final String user = getSafeCorrespondant(target);
 
 		// are we already talking to this user?

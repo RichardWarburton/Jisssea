@@ -4,19 +4,21 @@ core:
     custom commands
     store pipe status - eg network
     Silver's note - +m +q people may not work for channels, patch pircbot
+    Auto loading plugins - Commands, Completers, ViewPredicates
+    default channels
+    Generalise Options Parsing and Remove hacky String stuff "uwcsnet:#foo" etc
+    Remove hardcoding uwcsnet
 
 view predicates:
     multi-line folding - anti-manlir
 
-To Generalise:
-    Options Parsing
-    default channels
-
 Test:
     pm support
         - open new window
-        - update pm windows on change nick 
+        - update pm windows on change nick
     action support (/me)
+    raw command (/quote)
+    reconnect
 
 commands:
 
@@ -27,6 +29,7 @@ commands:
     pings
         - double pings
     away status
+    
     cross posting - alarm
     lock/unlock topic - NOT IN IRSSI DEFAULT
     logs
@@ -37,8 +40,6 @@ commands:
     help/docs
     ticker
     ctcp
-    raw command (/quote)
-    reconnect
     gc command
 
 ui:
