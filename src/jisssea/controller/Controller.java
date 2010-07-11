@@ -109,7 +109,8 @@ public class Controller {
 				"jisssea.controller.commands.TopicCommand", "jisssea.controller.commands.SayCommand", "jisssea.controller.commands.NickCommand",
 				"jisssea.controller.commands.FilterCommand", "jisssea.controller.commands.AliasCommand",
 				"jisssea.controller.commands.NickChangedCommand", "jisssea.controller.commands.PMCommand",
-				"jisssea.controller.commands.ActionCommand", };
+				"jisssea.controller.commands.ActionCommand", "jisssea.controller.commands.ControlCommand",
+				"jisssea.controller.commands.ReconnectCommand", "jisssea.controller.commands.RawCommand", };
 		for (String name : names) {
 			try {
 				Class<?> cls = Class.forName(name);

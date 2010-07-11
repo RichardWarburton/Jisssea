@@ -1,16 +1,18 @@
 channel name prefixes: # + & !
 
 core:
-    custom commands
-    store pipe status - eg network
-    Silver's note - +m +q people may not work for channels, patch pircbot
+    store pipe status - eg network/channel
     Auto loading plugins - Commands, Completers, ViewPredicates
-    default channels
-    Generalise Options Parsing and Remove hacky String stuff "uwcsnet:#foo" etc
-    Remove hardcoding uwcsnet
-
-view predicates:
-    multi-line folding - anti-manlir
+    Replace config with a perform
+            
+    Silver's note - +m +q people may not work for channels, patch pircbot
+    Generalise Options Parsing for user commands
+    	- Should return appropriate typesafe values (eg enums)
+    	- whitespace + case insensitive for command names
+    	- generated help messages on a parse fail
+    	- declarative, annotations based
+    Remove hacky String stuff "uwcsnet:#foo" etc
+    Remove test based hardcoding
 
 Test:
     pm support
@@ -19,17 +21,16 @@ Test:
     action support (/me)
     raw command (/quote)
     reconnect
-
-commands:
-
     channel control:
-        - op/deop
-        - voice/devoice
-        - kick/ban
-    pings
-        - double pings
-    away status
+    - op/deop
+    - voice/devoice
+    - kick/ban
+    multiple networks
     
+commands:
+    pings
+    double pings
+    away status
     cross posting - alarm
     lock/unlock topic - NOT IN IRSSI DEFAULT
     logs
@@ -44,18 +45,19 @@ commands:
 
 ui:
     keep entered text when moving windows
+    nick list
+     - stored nick information
+     - nick modes (@ + etc.)
+    list of windows
+        
     implement window management
         - tiling algorithms
-    nick list
     Add colour support 
         - irchelp.org, ANSI colour escape characters
         - reading colors from other clients
         - color'd output
-    nick modes (@ + etc.)
-    fix massive graphics corruption
-    grey out people in scrollback when they leave
     pasting safety
-    list of windows
-    
-test:
-    multiple networks
+
+view predicates:
+    multi-line folding - anti-manlir
+    grey out people in scrollback when they leave
