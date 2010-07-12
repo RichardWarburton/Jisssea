@@ -20,7 +20,7 @@ public class RawCommand extends RegexCommand {
 
 	private static final Log log = LogFactory.getLog(RawCommand.class);
 
-	private static final Pattern p = Pattern.compile("/quote ([^ ]*)");
+	private static final Pattern p = Pattern.compile("/quote (.*)");
 
 	@Override
 	protected Pattern pattern() {

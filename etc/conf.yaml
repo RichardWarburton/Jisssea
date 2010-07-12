@@ -6,4 +6,4 @@ servers:
         address: irc.uwcs.co.uk
         port: 6667
         channels:
-            -   #jizz
+            -   #jizz2

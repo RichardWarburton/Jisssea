@@ -57,6 +57,7 @@ ui:
         - irchelp.org, ANSI colour escape characters
         - reading colors from other clients
         - color'd output
+    align messages on left
     pasting safety
     make info windows colours configurable
 
