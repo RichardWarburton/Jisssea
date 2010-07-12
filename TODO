@@ -1,8 +1,10 @@
 channel name prefixes: # + & !
 
 core:
+    Remove test based hardcoding
+    
     Replace config with a perform
-    Test cases
+    Units Test
     Silver's note - +m +q people may not work for channels, patch pircbot
     Generalise Options Parsing for user commands
     	- Should return appropriate typesafe values (eg enums)
@@ -10,7 +12,6 @@ core:
     	- generated help messages on a parse fail
     	- declarative, annotations based
     Remove hacky String stuff "uwcsnet:#foo" etc
-    Remove test based hardcoding
 
 Test:
     pm support
@@ -24,7 +25,7 @@ Test:
     - voice/devoice
     - kick/ban
     multiple networks
-    
+
 commands:
     pings
     double pings
@@ -41,6 +42,8 @@ commands:
     ctcp
     gc command
     plugin loading/information reflection command
+    /lastlogall
+    /lastlog
 
 ui:
     keep entered text when moving windows
@@ -56,6 +59,7 @@ ui:
         - reading colors from other clients
         - color'd output
     pasting safety
+    make info windows colours configurable
 
 view predicates:
     multi-line folding - anti-manlir
