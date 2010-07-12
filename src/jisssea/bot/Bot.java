@@ -7,6 +7,7 @@ import java.util.Set;
 import jisssea.config.Server;
 import jisssea.config.User;
 import jisssea.controller.Controller;
+import jisssea.controller.messages.ActionMessage;
 import jisssea.controller.messages.ConnectMessage;
 import jisssea.controller.messages.DisconnectMessage;
 import jisssea.controller.messages.JoinMessage;
@@ -32,75 +33,70 @@ public class Bot extends PircBot {
 
 	@Override
 	protected void onDisconnect() {
-		log.message(new DisconnectMessage(this,server.getName()));
+		log.message(new DisconnectMessage(this, server.getName()));
 		super.onDisconnect();
 	}
 
 	@Override
-	protected void onPrivateMessage(String sender, String login,
-			String hostname, String message) {
-		log.message(new PrivateMessageMessage(this,sender, login, hostname, message));
+	protected void onPrivateMessage(String sender, String login, String hostname, String message) {
+		log.message(new PrivateMessageMessage(this, sender, login, hostname, message));
 		super.onPrivateMessage(sender, login, hostname, message);
 	}
 
 	@Override
-	protected void onPart(String channel, String sender, String login,
-			String hostname) {
-		log.message(new PartMessage(this,channel, sender, login, hostname));
+	protected void onAction(String sender, String login, String hostname, String target, String action) {
+		log.message(new ActionMessage(this, sender, login, hostname, target, action));
+		super.onAction(sender, login, hostname, target, action);
+	}
+
+	@Override
+	protected void onPart(String channel, String sender, String login, String hostname) {
+		log.message(new PartMessage(this, channel, sender, login, hostname));
 		super.onPart(channel, sender, login, hostname);
 	}
 
 	@Override
-	protected void onNickChange(String oldNick, String login, String hostname,
-			String newNick) {
-		log.message(new NickChangeMessage(this,oldNick, login, hostname, newNick));
+	protected void onNickChange(String oldNick, String login, String hostname, String newNick) {
+		log.message(new NickChangeMessage(this, oldNick, login, hostname, newNick));
 		super.onNickChange(oldNick, login, hostname, newNick);
 	}
 
 	@Override
-	protected void onKick(String channel, String kickerNick,
-			String kickerLogin, String kickerHostname, String recipientNick,
-			String reason) {
-		log.message(new KickMessage(this,channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason));
-		super.onKick(channel, kickerNick, kickerLogin, kickerHostname, recipientNick,
-				reason);
+	protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
+		log.message(new KickMessage(this, channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason));
+		super.onKick(channel, kickerNick, kickerLogin, kickerHostname, recipientNick, reason);
 	}
 
 	@Override
-	protected void onTopic(String channel, String topic, String setBy,
-			long date, boolean changed) {
-		log.message(new TopicMessage(this,channel, topic, setBy, date, changed));
+	protected void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
+		log.message(new TopicMessage(this, channel, topic, setBy, date, changed));
 		super.onTopic(channel, topic, setBy, date, changed);
 	}
 
 	@Override
-	protected void onVoice(String channel, String sourceNick,
-			String sourceLogin, String sourceHostname, String recipient) {
-		log.message(new VoiceMessage(this,channel, sourceNick, sourceLogin, sourceHostname, recipient));
+	protected void onVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient) {
+		log.message(new VoiceMessage(this, channel, sourceNick, sourceLogin, sourceHostname, recipient));
 		super.onVoice(channel, sourceNick, sourceLogin, sourceHostname, recipient);
 	}
-	
+
 	@Override
-	protected void onMessage(String channel, String sender, String login,
-			String hostname, String message) {
-		log.message(new MessageMessage(this,channel, sender, login, hostname, message));
+	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
+		log.message(new MessageMessage(this, channel, sender, login, hostname, message));
 		super.onMessage(channel, sender, login, hostname, message);
 	}
-	
+
 	@Override
-	protected void onJoin(String channel, String sender, String login,
-			String hostname) {
-		log.message(new JoinMessage(this,channel, sender, login, hostname));
+	protected void onJoin(String channel, String sender, String login, String hostname) {
+		log.message(new JoinMessage(this, channel, sender, login, hostname));
 		super.onJoin(channel, sender, login, hostname);
 	}
-	
+
 	@Override
 	protected void onConnect() {
-		log.message(new ConnectMessage(this,server.getName()));
+		log.message(new ConnectMessage(this, server.getName()));
 		super.onConnect();
 	}
-	
-	
+
 	public Bot(final Controller log, final Server server, final User user) throws ConnectionException {
 		try {
 			this.log = log;
@@ -108,12 +104,12 @@ public class Bot extends PircBot {
 			this.serverName = server.getName();
 			setName(user.getName());
 			connect(server.getAddress(), server.getPort());
-			
+
 		} catch (Exception e) {
 			throw new ConnectionException(e);
 		}
 	}
-	
+
 	public Set<String> getChannelSet() {
 		return new HashSet<String>(Arrays.asList(getChannels()));
 	}

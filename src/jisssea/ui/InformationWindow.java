@@ -9,45 +9,31 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import charva.awt.Color;
-import charva.awt.Container;
 import charva.awt.Toolkit;
 import charvax.swing.BorderFactory;
 import charvax.swing.Box;
 import charvax.swing.BoxLayout;
-import charvax.swing.JFrame;
 import charvax.swing.JLabel;
+import charvax.swing.JPanel;
 import charvax.swing.JTextField;
-import charvax.swing.SwingUtilities;
 
-public class InformationWindow extends JFrame {
+public class InformationWindow extends JPanel {
 
 	private static final Log log = LogFactory.getLog(InformationWindow.class);
 
-	public static void main(String[] args) {
-		// System.setProperty("charva.color", "");
-		try {
-			final InformationWindow win = new InformationWindow();
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						Thread.sleep(2000);
-						win.addWindow(3, Urgency.NORMAL);
-						win.removeWindow(1);
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-
-					}
-					System.exit(0);
-				}
-			});
-			win.addWindow(1, Urgency.NORMAL);
-			win.addWindow(2, Urgency.BOLD);
-			win.show();
-		} catch (Throwable e) {
-			log.debug("ffs - error", e);
-		}
-	}
+	/*
+	 * public static void main(String[] args) { //
+	 * System.setProperty("charva.color", ""); try { final InformationWindow win
+	 * = new InformationWindow(); SwingUtilities.invokeLater(new Runnable() {
+	 * 
+	 * @Override public void run() { try { Thread.sleep(2000); win.addWindow(3,
+	 * Urgency.NORMAL); win.removeWindow(1); Thread.sleep(2000); } catch
+	 * (InterruptedException e) {
+	 * 
+	 * } System.exit(0); } }); win.addWindow(1, Urgency.NORMAL);
+	 * win.addWindow(2, Urgency.BOLD); win.show(); } catch (Throwable e) {
+	 * log.debug("ffs - error", e); } }
+	 */
 
 	public enum Urgency {
 		NORMAL {
@@ -89,21 +75,19 @@ public class InformationWindow extends JFrame {
 
 		windows = new ArrayList<SingleWindowInfo>();
 
-		final Container contentPane = getContentPane();
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
-		contentPane.add(new JTextField(1));
-		contentPane.add(Box.createHorizontalBox());
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		add(new JTextField(1));
+		add(Box.createHorizontalBox());
 
 		setLocation(0, 0);
-		setSize(Toolkit.getDefaultToolkit().getScreenRows(), UIConstants.INFO_WINDOW_HEIGHT);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(Toolkit.getDefaultToolkit().getScreenColumns(), UIConstants.INFO_WINDOW_HEIGHT);
 		validate();
 	}
 
 	public void addWindow(int n, Urgency urgency) {
 		final SingleWindowInfo info = new SingleWindowInfo(n, urgency);
 		windows.add(info);
-		getContentPane().add(info.label);
+		add(info.label);
 		forceRedraw();
 	}
 
@@ -116,7 +100,7 @@ public class InformationWindow extends JFrame {
 		});
 		log.debug(found);
 		windows.remove(found);
-		getContentPane().remove(found.label);
+		remove(found.label);
 		forceRedraw();
 	}
 

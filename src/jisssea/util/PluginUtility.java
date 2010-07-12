@@ -10,7 +10,12 @@ import java.util.List;
 
 import jisssea.controller.commands.Command;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class PluginUtility {
+
+	private static final Log log = LogFactory.getLog(PluginUtility.class);
 
 	public static void main(String[] args) throws Exception {
 		List<Command> commands = loadPlugins(Command.class, "bin", "jisssea.controller.commands");
@@ -28,6 +33,7 @@ public class PluginUtility {
 	 * @param pkg
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> List<T> loadPlugins(final Class<T> parent, final String location, final String pkg) {
 		try {
 			final List<T> plugins = new ArrayList<T>();
@@ -38,7 +44,9 @@ public class PluginUtility {
 					if (f.isFile()) {
 						final String name = f.getName();
 						final Class<?> cls = ucl.loadClass(pkg + "." + name.substring(0, name.indexOf('.')));
-						if (!cls.isInterface() && !Modifier.isAbstract(cls.getModifiers()) && isAbstractSubType(parent, cls)) {
+						if (!cls.isAnonymousClass() && !cls.isInterface() && !Modifier.isAbstract(cls.getModifiers())
+								&& isAbstractSubType(parent, cls)) {
+							log.debug("Found plugin: " + cls.getName());
 							if (cls.isEnum()) {
 								for (Object e : cls.getEnumConstants()) {
 									plugins.add((T) e);

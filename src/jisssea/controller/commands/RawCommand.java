@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author richard
  * 
- *         /quote action faux foo
+ *         /quote PRIVMSG mulletron :rawtest
  */
 public class RawCommand extends RegexCommand {
 

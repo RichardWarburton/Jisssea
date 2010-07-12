@@ -39,10 +39,10 @@ public class ControlCommand extends RegexCommand {
 	protected void guardedAct(Matcher m, UserMessage msg, BotRegistry irc, Controller ctrl) {
 		try {
 			final String nick = m.group(2).trim();
-			final String maybeChannel = m.group(3).trim();
+			final String maybeChannel = m.group(3);
 			final Bot bot = irc.getTargetContext(maybeChannel);
 			final String channel = (maybeChannel == null) ? ctrl.getPipe(msg.getWindow()).getDefaultPredicate().getDefaultCorrespondant()
-					: IrcUtility.getSafeCorrespondant(maybeChannel);
+					: IrcUtility.getSafeCorrespondant(maybeChannel.trim());
 			final Command cmd = Command.valueOf(m.group(1));
 			switch (cmd) {
 			case kick:

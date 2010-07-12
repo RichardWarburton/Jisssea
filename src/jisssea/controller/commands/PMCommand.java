@@ -16,9 +16,14 @@ import jisssea.controller.Pipe;
 import jisssea.controller.messages.UserMessage;
 import jisssea.util.Procedure;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class PMCommand extends RegexCommand {
 
-	private static final Pattern p = Pattern.compile("/pm (.*?) ( .*)?");
+	private static final Log log = LogFactory.getLog(PMCommand.class);
+
+	private static final Pattern p = Pattern.compile("/pm (.*?) (.*)");
 
 	@Override
 	protected Pattern pattern() {
@@ -27,6 +32,7 @@ public class PMCommand extends RegexCommand {
 
 	@Override
 	protected void guardedAct(Matcher m, UserMessage msg, BotRegistry irc, Controller ctrl) {
+
 		final String target = m.group(1);
 		final String messageBody = m.group(2);
 		final Bot network = irc.getTargetContext(target);

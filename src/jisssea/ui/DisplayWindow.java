@@ -1,12 +1,15 @@
 package jisssea.ui;
 
+import static charva.awt.BorderLayout.NORTH;
 import static charva.awt.BorderLayout.SOUTH;
 import static charva.awt.BorderLayout.WEST;
+import static jisssea.ui.UIConstants.ENTRY_HEIGHT;
 import static jisssea.ui.UIConstants.INFO_WINDOW_HEIGHT;
 
 import java.util.List;
 
 import jisssea.controller.Controller;
+import jisssea.controller.messages.ActionMessage;
 import jisssea.controller.messages.ConnectMessage;
 import jisssea.controller.messages.DisconnectMessage;
 import jisssea.controller.messages.ErrorMessage;
@@ -58,8 +61,7 @@ public class DisplayWindow extends JFrame implements KeyListener {
 		this.windowNumber = windowNumber;
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
 		int width = toolkit.getScreenColumns();
-		int height = toolkit.getScreenRows() - INFO_WINDOW_HEIGHT;
-		setLocation(0, INFO_WINDOW_HEIGHT);
+		int height = toolkit.getScreenRows();
 		setSize(width, height);
 		this.handler = handler;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +70,7 @@ public class DisplayWindow extends JFrame implements KeyListener {
 
 		model = new DefaultListModel();
 
-		messages.setVisibleRowCount(height - 5);
+		messages.setVisibleRowCount(height - (ENTRY_HEIGHT + INFO_WINDOW_HEIGHT));
 		messages.setColumns(width - 4);
 		scroll = new JScrollPane(messages);
 		TitledBorder viewportBorder = new TitledBorder("window " + windowNumber);
@@ -85,6 +87,7 @@ public class DisplayWindow extends JFrame implements KeyListener {
 
 		BorderLayout layout = new BorderLayout();
 		pane.setLayout(layout);
+		pane.add(handler.getInfoWindow(), NORTH);
 		pane.add(scroll, WEST);
 		pane.add(entry, SOUTH);
 
@@ -128,6 +131,11 @@ public class DisplayWindow extends JFrame implements KeyListener {
 			case MESSAGE: {
 				MessageMessage mmsg = (MessageMessage) msg;
 				writeToConsole(mmsg.getSender(), mmsg.getMessage());
+				break;
+			}
+			case ACTION: {
+				ActionMessage amsg = (ActionMessage) msg;
+				writeToConsole("*", amsg.getSender() + " " + amsg.getAction());
 				break;
 			}
 			case PRIVATEMESSAGE: {
@@ -178,6 +186,7 @@ public class DisplayWindow extends JFrame implements KeyListener {
 				System.exit(0);
 			else {
 				handler.message(new UserMessage(entry.getText(), this));
+				entry.setText("");
 			}
 		}
 	}

@@ -21,6 +21,7 @@ import jisssea.controller.messages.MessageType;
 import jisssea.controller.messages.UserMessage;
 import jisssea.controller.predicates.DefaultPredicate;
 import jisssea.ui.DisplayWindow;
+import jisssea.ui.InformationWindow;
 import jisssea.util.Procedure;
 
 import org.apache.commons.logging.Log;
@@ -35,8 +36,6 @@ import charvax.swing.SwingUtilities;
  *         commands for processing also holds appropriate window state, eg which
  *         network its connected to
  * 
- *         Currently only has 1 window, and sends all messages to it
- * 
  */
 public class Controller {
 
@@ -44,6 +43,8 @@ public class Controller {
 	private final BlockingQueue<Message> q;
 	private final List<Command> commands;
 	private final Map<Integer, Pipe> pipes;
+	private final InformationWindow infoWindow;
+
 	private int currentWindow;
 	private int totalWindows;
 
@@ -55,6 +56,11 @@ public class Controller {
 		commands = loadCommands();
 		pipes = new HashMap<Integer, Pipe>();
 		q = new LinkedBlockingQueue<Message>();
+		// setup information window
+		// infoWindow = null;
+		infoWindow = new InformationWindow();
+
+		// log.debug("done info window");
 
 		try {
 			final Config cfg = Config.fromFile("etc/conf.yaml");
@@ -81,7 +87,7 @@ public class Controller {
 			} catch (Exception e1) {
 
 			}
-			e.printStackTrace();
+			log.error("Error caught at main thread", e);
 		}
 	}
 
@@ -112,6 +118,10 @@ public class Controller {
 			}
 		}
 		return null;
+	}
+
+	public InformationWindow getInfoWindow() {
+		return infoWindow;
 	}
 
 	/**

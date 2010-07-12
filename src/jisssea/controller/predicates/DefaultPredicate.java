@@ -1,5 +1,6 @@
 package jisssea.controller.predicates;
 
+import static jisssea.controller.messages.MessageType.ACTION;
 import static jisssea.controller.messages.MessageType.ERROR;
 import static jisssea.controller.messages.MessageType.JOIN;
 import static jisssea.controller.messages.MessageType.KICK;
@@ -54,7 +55,7 @@ public class DefaultPredicate extends SimplePredicate {
 		correspondants = new HashSet<String>();
 		correspondants.add(correspondant);
 		messageTypes = new HashSet<MessageType>();
-		messageTypes.addAll(Arrays.asList(JOIN, PART, VOICE, PRIVATEMESSAGE, TOPIC, WARNING, ERROR, MESSAGE, KICK, LOG));
+		messageTypes.addAll(Arrays.asList(JOIN, PART, VOICE, PRIVATEMESSAGE, TOPIC, WARNING, ERROR, MESSAGE, KICK, LOG, ACTION));
 		defaultCorrespondant = correspondant;
 	}
 

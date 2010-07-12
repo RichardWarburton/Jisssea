@@ -11,14 +11,13 @@ core:
     	- whitespace + case insensitive for command names
     	- generated help messages on a parse fail
     	- declarative, annotations based
+    	- make all commands standardise on sending to 1 pipe's default channel, with standard target based option
     Remove hacky String stuff "uwcsnet:#foo" etc
 
 Test:
-    pm support
-        - open new window
-        - update pm windows on change nick
-    action support (/me)
-    raw command (/quote)
+    - open new window on pm
+    - update pm windows on change nick
+    raw command (/quote) "PRIVMSG mulletron :rawtest"
     reconnect
     channel control:
     - op/deop
