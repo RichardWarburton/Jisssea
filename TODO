@@ -16,10 +16,6 @@ core:
 
 Test:
     - update pm windows on change nick
-    channel control:
-    - op/deop
-    - voice/devoice
-    - kick/ban
     multiple networks
     
     reconnect
@@ -42,12 +38,10 @@ commands:
     plugin loading/information reflection command
     /lastlogall
     /lastlog
+    hilighting
 
 ui:
     keep entered text when moving windows
-    nick list
-     - stored nick information
-     - nick modes (@ + etc.)
     list of windows
         
     implement window management
@@ -63,3 +57,4 @@ ui:
 view predicates:
     multi-line folding - anti-manlir
     grey out people in scrollback when they leave
+

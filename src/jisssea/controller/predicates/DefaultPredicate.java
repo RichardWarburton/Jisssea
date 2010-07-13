@@ -11,6 +11,7 @@ import static jisssea.controller.messages.MessageType.NICKCHANGE;
 import static jisssea.controller.messages.MessageType.PART;
 import static jisssea.controller.messages.MessageType.PRIVATEMESSAGE;
 import static jisssea.controller.messages.MessageType.TOPIC;
+import static jisssea.controller.messages.MessageType.USER_LIST;
 import static jisssea.controller.messages.MessageType.VOICE;
 import static jisssea.controller.messages.MessageType.WARNING;
 import static jisssea.util.IrcUtility.getCorrespondant;
@@ -56,7 +57,7 @@ public class DefaultPredicate extends SimplePredicate {
 		correspondants = new HashSet<String>();
 		correspondants.add(correspondant);
 		messageTypes = new HashSet<MessageType>();
-		messageTypes.addAll(Arrays.asList(JOIN, PART, VOICE, PRIVATEMESSAGE, TOPIC, WARNING, ERROR, MESSAGE, KICK, LOG, ACTION, MODE));
+		messageTypes.addAll(Arrays.asList(JOIN, PART, VOICE, PRIVATEMESSAGE, TOPIC, WARNING, ERROR, MESSAGE, KICK, LOG, ACTION, MODE, USER_LIST));
 		defaultCorrespondant = correspondant;
 	}
 

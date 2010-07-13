@@ -18,6 +18,7 @@ import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.messages.PartMessage;
 import jisssea.controller.messages.PrivateMessageMessage;
 import jisssea.controller.messages.TopicMessage;
+import jisssea.controller.messages.UserListMessage;
 import jisssea.controller.messages.VoiceMessage;
 
 import org.jibble.pircbot.PircBot;
@@ -30,6 +31,12 @@ public class Bot extends PircBot {
 
 	public String getServerName() {
 		return serverName;
+	}
+
+	@Override
+	protected void onUserList(String channel, org.jibble.pircbot.User[] users) {
+		log.message(new UserListMessage(this, channel, users));
+		super.onUserList(channel, users);
 	}
 
 	@Override

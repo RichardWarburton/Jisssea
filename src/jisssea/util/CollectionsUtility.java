@@ -1,6 +1,9 @@
 package jisssea.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -31,6 +34,18 @@ public class CollectionsUtility {
 				return t;
 		}
 		throw new IllegalArgumentException("Cannot find element");
+	}
+
+	public static <F, T> List<T> map(Collection<F> from, Function<F, T> func) {
+		List<T> to = new ArrayList<T>();
+		for (F f : from) {
+			func.apply(f);
+		}
+		return to;
+	}
+
+	public static <F, T> List<T> map(F[] from, Function<F, T> func) {
+		return map(Arrays.asList(from), func);
 	}
 
 	public static interface Predicate<T> {

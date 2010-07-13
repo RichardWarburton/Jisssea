@@ -5,6 +5,7 @@ import static charva.awt.BorderLayout.SOUTH;
 import static charva.awt.BorderLayout.WEST;
 import static jisssea.ui.UIConstants.ENTRY_HEIGHT;
 import static jisssea.ui.UIConstants.INFO_WINDOW_HEIGHT;
+import static jisssea.util.StringUtility.join;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import jisssea.controller.messages.ModeMessage;
 import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.messages.PrivateMessageMessage;
 import jisssea.controller.messages.TopicMessage;
+import jisssea.controller.messages.UserListMessage;
 import jisssea.controller.messages.UserMessage;
 import jisssea.ui.completers.CompleterRegistry;
 
@@ -153,6 +155,10 @@ public class DisplayWindow extends JFrame implements KeyListener {
 			case KICK: {
 				KickMessage kmsg = (KickMessage) msg;
 				writeToConsole(kmsg.getKickerNick(), "has kicked: " + kmsg.getRecipientNick());
+			}
+			case USER_LIST: {
+				UserListMessage ulmsg = (UserListMessage) msg;
+				writeToConsole(ulmsg.getChannel() + " nicks", join(", ", ulmsg.getUsers()));
 			}
 
 			}

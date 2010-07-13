@@ -1,7 +1,7 @@
 package jisssea.controller.messages;
 
 public enum MessageType {
-	ERROR, LOG, WARNING, CONNECT, DISCONNECT, USER, ACTION {
+	ERROR, LOG, WARNING, CONNECT, DISCONNECT, USER, MODE, ACTION {
 		@Override
 		public String origin(Message msg) {
 			ActionMessage msg2 = (ActionMessage) msg;
@@ -64,7 +64,13 @@ public enum MessageType {
 			return msg2.getBot().getServerName() + ":" + msg2.getSender();
 		}
 	},
-	MODE;
+	USER_LIST {
+		@Override
+		public String origin(Message msg) {
+			UserListMessage msg2 = (UserListMessage) msg;
+			return msg2.getBot().getServerName() + ":" + msg2.getChannel();
+		}
+	};
 
 	public String origin(Message msg) {
 		throw new IllegalArgumentException();
