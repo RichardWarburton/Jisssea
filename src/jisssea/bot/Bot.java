@@ -13,6 +13,7 @@ import jisssea.controller.messages.DisconnectMessage;
 import jisssea.controller.messages.JoinMessage;
 import jisssea.controller.messages.KickMessage;
 import jisssea.controller.messages.MessageMessage;
+import jisssea.controller.messages.ModeMessage;
 import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.messages.PartMessage;
 import jisssea.controller.messages.PrivateMessageMessage;
@@ -29,6 +30,12 @@ public class Bot extends PircBot {
 
 	public String getServerName() {
 		return serverName;
+	}
+
+	@Override
+	protected void onMode(String channel, String sourceNick, String sourceLogin, String sourceHostname, String mode) {
+		log.message(new ModeMessage(this, channel, sourceNick, sourceLogin, sourceHostname, mode));
+		super.onMode(channel, sourceNick, sourceLogin, sourceHostname, mode);
 	}
 
 	@Override

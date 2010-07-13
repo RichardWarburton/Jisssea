@@ -141,7 +141,11 @@ public class Controller {
 				// process commands
 				log.debug("Executing commands");
 				for (Command cmd : commands) {
-					cmd.act(msg, reg, this);
+					try {
+						cmd.act(msg, reg, this);
+					} catch (Exception e) {
+						log.warn("Error in a command", e);
+					}
 				}
 				log.debug("Updating Pipes");
 				// update pipes

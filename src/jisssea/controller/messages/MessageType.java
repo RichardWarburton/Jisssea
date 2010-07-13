@@ -63,7 +63,8 @@ public enum MessageType {
 			PrivateMessageMessage msg2 = (PrivateMessageMessage) msg;
 			return msg2.getBot().getServerName() + ":" + msg2.getSender();
 		}
-	};
+	},
+	MODE;
 
 	public String origin(Message msg) {
 		throw new IllegalArgumentException();

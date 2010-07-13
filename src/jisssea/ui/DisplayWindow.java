@@ -14,10 +14,12 @@ import jisssea.controller.messages.ConnectMessage;
 import jisssea.controller.messages.DisconnectMessage;
 import jisssea.controller.messages.ErrorMessage;
 import jisssea.controller.messages.JoinMessage;
+import jisssea.controller.messages.KickMessage;
 import jisssea.controller.messages.LogMessage;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.MessageMessage;
 import jisssea.controller.messages.MessageType;
+import jisssea.controller.messages.ModeMessage;
 import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.messages.PrivateMessageMessage;
 import jisssea.controller.messages.TopicMessage;
@@ -143,8 +145,16 @@ public class DisplayWindow extends JFrame implements KeyListener {
 				writeToConsole(mmsg.getSender(), mmsg.getMessage());
 				break;
 			}
-			default:
+			case MODE: {
+				ModeMessage mmsg = (ModeMessage) msg;
+				writeToConsole(mmsg.getSourceNick(), "Sets mode: " + mmsg.getMode());
 				break;
+			}
+			case KICK: {
+				KickMessage kmsg = (KickMessage) msg;
+				writeToConsole(kmsg.getKickerNick(), "has kicked: " + kmsg.getRecipientNick());
+			}
+
 			}
 		}
 
