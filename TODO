@@ -15,15 +15,14 @@ core:
     Remove hacky String stuff "uwcsnet:#foo" etc
 
 Test:
-    - open new window on pm
     - update pm windows on change nick
-    raw command (/quote) "PRIVMSG mulletron :rawtest"
-    reconnect
     channel control:
     - op/deop
     - voice/devoice
     - kick/ban
     multiple networks
+    
+    reconnect
 
 commands:
     pings

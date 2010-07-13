@@ -13,6 +13,7 @@ import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
+import jisssea.controller.messages.MessageMessage;
 import jisssea.controller.messages.UserMessage;
 import jisssea.util.Procedure;
 
@@ -38,6 +39,8 @@ public class PMCommand extends RegexCommand {
 		final Bot network = irc.getTargetContext(target);
 		final String user = getSafeCorrespondant(target);
 
+		log.debug("Sending: " + messageBody + " as a PM to " + target);
+
 		// are we already talking to this user?
 		// or do we need to create a new window
 		final Set<String> correspondants = new HashSet<String>();
@@ -45,17 +48,22 @@ public class PMCommand extends RegexCommand {
 			@Override
 			public boolean f(Pipe a) {
 				for (String correspondantName : a.getDefaultPredicate().correspondants) {
-					if (isValidChannel(correspondantName))
+					if (!isValidChannel(correspondantName))
 						correspondants.add(correspondantName);
 				}
 				return true;
 			}
 		});
-		if (!correspondants.contains(user)) {
-			ctrl.createPipe((isValidTarget(target)) ? target : network.getName() + ":" + target);
+		log.debug("PM Checking: " + correspondants + " contains " + user);
+		if (!correspondants.contains(network.getServerName() + ":" + user)) {
+			final Pipe pipe = ctrl.createPipe((isValidTarget(target)) ? target : (network.getServerName() + ":" + target));
+			ctrl.selectPipe(pipe);
 		}
 
+		// send fake message to self
+		ctrl.message(new MessageMessage(network, user, network.getNick(), network.getLogin(), network.getName(), messageBody));
+
 		// send the message
-		network.sendMessage(target, messageBody);
+		network.sendMessage(user, messageBody);
 	}
 }

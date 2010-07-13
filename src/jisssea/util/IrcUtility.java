@@ -9,7 +9,7 @@ public class IrcUtility {
 	private static final Set<String> prefixes = new HashSet<String>(Arrays.asList("#", "+", "!", "&"));
 
 	public static void main(String[] args) {
-		String t1 = "uwcsnet:#bot";
+		String t1 = "mulletron"; // "uwcsnet:#bot";
 		System.out.println(isValidTarget(t1));
 		System.out.println(getNetwork(t1));
 		System.out.println(getCorrespondant(t1));

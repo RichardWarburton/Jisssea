@@ -94,7 +94,6 @@ public class DefaultPredicate extends SimplePredicate {
 		} else {
 			final boolean containsType = messageTypes.contains(type);
 			try {
-
 				return containsType && (correspondants.isEmpty() || correspondants.contains(type.origin(msg)));
 			} catch (IllegalArgumentException e) {
 				return containsType;
