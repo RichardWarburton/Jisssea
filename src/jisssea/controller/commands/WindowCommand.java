@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
+import jisssea.controller.commands.api.RegexCommand;
 import jisssea.controller.messages.ErrorMessage;
 import jisssea.controller.messages.UserMessage;
 

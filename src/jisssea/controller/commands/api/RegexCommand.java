@@ -1,4 +1,4 @@
-package jisssea.controller.commands;
+package jisssea.controller.commands.api;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

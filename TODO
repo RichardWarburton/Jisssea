@@ -6,22 +6,21 @@ core:
     Replace config with a perform
     Units Test
     Silver's note - +m +q people may not work for channels, patch pircbot
-    Generalise Options Parsing for user commands
-    	- Should return appropriate typesafe values (eg enums)
-    	- whitespace + case insensitive for command names
-    	- generated help messages on a parse fail
-    	- declarative, annotations based
-    	- make all commands standardise on sending to 1 pipe's default channel, with standard target based option
+	Implement UserCommand
     Remove hacky String stuff "uwcsnet:#foo" etc
 
 Test:
-    - update pm windows on change nick
+    update pm windows on change nick
     multiple networks
     
     reconnect
 
 commands:
-    pings
+    hilighting/pings
+    /lastlog
+    /names
+    plugin loading/information reflection command
+    
     double pings
     away status
     cross posting - alarm
@@ -35,13 +34,11 @@ commands:
     ticker
     ctcp
     gc command
-    plugin loading/information reflection command
+
     /lastlogall
-    /lastlog
-    hilighting
+    
 
 ui:
-    keep entered text when moving windows
     list of windows
         
     implement window management
@@ -57,4 +54,5 @@ ui:
 view predicates:
     multi-line folding - anti-manlir
     grey out people in scrollback when they leave
+    nick color
 

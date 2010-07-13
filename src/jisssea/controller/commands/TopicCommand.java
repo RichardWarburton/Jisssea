@@ -15,6 +15,7 @@ import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
+import jisssea.controller.commands.api.RegexCommand;
 import jisssea.controller.messages.LogMessage;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.TopicMessage;

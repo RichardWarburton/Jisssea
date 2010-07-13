@@ -9,6 +9,18 @@ import java.util.Map.Entry;
 
 public class CollectionsUtility {
 
+	public enum Action {
+		remove, add
+	};
+
+	public static <T> void doAct(Action act, Collection<T> coll, T t) {
+		if (act == Action.remove) {
+			coll.remove(t);
+		} else {
+			coll.add(t);
+		}
+	}
+
 	/**
 	 * 
 	 * @param <K>

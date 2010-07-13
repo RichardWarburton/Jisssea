@@ -15,7 +15,7 @@ import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.config.Config;
 import jisssea.config.Server;
-import jisssea.controller.commands.Command;
+import jisssea.controller.commands.api.Command;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.MessageType;
 import jisssea.controller.messages.UserMessage;

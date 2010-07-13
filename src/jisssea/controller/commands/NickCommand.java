@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
+import jisssea.controller.commands.api.RegexCommand;
 import jisssea.controller.messages.UserMessage;
 import jisssea.controller.predicates.DefaultPredicate;
 

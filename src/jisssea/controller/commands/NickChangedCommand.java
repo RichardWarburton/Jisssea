@@ -7,6 +7,7 @@ import java.util.Set;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
+import jisssea.controller.commands.api.Command;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.predicates.DefaultPredicate;

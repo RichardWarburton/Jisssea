@@ -12,5 +12,5 @@ public class Message {
 	public MessageType getType() {
 		return type;
 	}
-	
+
 }

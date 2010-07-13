@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jisssea.controller.commands.Command;
+import jisssea.controller.commands.api.Command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,7 +64,7 @@ public class PluginUtility {
 		}
 	}
 
-	private static boolean isAbstractSubType(final Class<?> parent, final Class<?> child) {
+	public static boolean isAbstractSubType(final Class<?> parent, final Class<?> child) {
 
 		if (child == null)
 			return false;
