@@ -83,7 +83,7 @@ public abstract class UserCommand implements Command {
 		if (msg.getType() == USER) {
 			final UserMessage umsg = (UserMessage) msg;
 			String input = umsg.getInput();
-			if (input.startsWith('/' + name)) {
+			if (input.toLowerCase().startsWith('/' + name.toLowerCase())) {
 				input = input.substring(name.length());
 				final Pipe pipe = ctrl.getPipe(umsg.getWindow());
 				final Map<String, Object> optionResults = new HashMap<String, Object>();
