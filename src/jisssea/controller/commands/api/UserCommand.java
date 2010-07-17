@@ -1,6 +1,8 @@
 package jisssea.controller.commands.api;
 
+import static java.util.Arrays.asList;
 import static jisssea.controller.messages.MessageType.USER;
+import static jisssea.util.StringUtility.join;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -73,6 +75,9 @@ public abstract class UserCommand implements Command {
 			if (option != null && options != null) {
 				throw new UserCommandError("You may not specify both an option and a set of Options for the UserCommand " + name);
 			}
+			if (option != null) {
+				options = new DummyOptions(option);
+			}
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
@@ -83,18 +88,20 @@ public abstract class UserCommand implements Command {
 		if (msg.getType() == USER) {
 			final UserMessage umsg = (UserMessage) msg;
 			String input = umsg.getInput();
-			if (input.toLowerCase().startsWith('/' + name.toLowerCase())) {
+			final String[] split = input.split(" ");
+			if (split[0].toLowerCase().startsWith('/' + name.toLowerCase())) {
 				input = input.substring(name.length());
 				final Pipe pipe = ctrl.getPipe(umsg.getWindow());
 				final Map<String, Object> optionResults = new HashMap<String, Object>();
 				final Map<String, String[]> requirements = new HashMap<String, String[]>();
+				int i = 1;
 				try {
-					if (option != null) {
-						checkOption(optionResults, requirements, option, input, pipe, irc, ctrl);
-					} else {
-						for (Option option : options.value()) {
-							checkOption(optionResults, requirements, option, input, pipe, irc, ctrl);
+					for (Option option : options.value()) {
+						if (split.length <= i && option.required()) {
+							throw new ParseException("Insufficient arguments for required options");
 						}
+						if (checkOption(optionResults, requirements, option, split[i], pipe, irc, ctrl))
+							i++;
 					}
 					for (Entry<String, String[]> e : requirements.entrySet()) {
 						if (optionResults.containsKey(e.getKey())) {
@@ -105,7 +112,8 @@ public abstract class UserCommand implements Command {
 							}
 						}
 					}
-					userAct(optionResults, umsg, pipe, irc, ctrl);
+					final String rem = (input.length() > i) ? join(" ", asList(input).subList(i, input.length() - 1)) : "";
+					userAct(optionResults, umsg, pipe, irc, ctrl, rem);
 				} catch (ParseException e) {
 					log.debug("ParseException:", e);
 					ctrl.message(new ErrorMessage(e.getMessage(), e));
@@ -114,8 +122,19 @@ public abstract class UserCommand implements Command {
 		}
 	}
 
-	public void checkOption(final Map<String, Object> optionResults, final Map<String, String[]> requirements, final Option opt, final String input,
-			final Pipe pipe, final BotRegistry irc, final Controller ctrl) {
+	/**
+	 * 
+	 * @param optionResults
+	 * @param requirements
+	 * @param opt
+	 * @param input
+	 * @param pipe
+	 * @param irc
+	 * @param ctrl
+	 * @return true if there was an option added, false otherwise
+	 */
+	private boolean checkOption(final Map<String, Object> optionResults, final Map<String, String[]> requirements, final Option opt,
+			final String input, final Pipe pipe, final BotRegistry irc, final Controller ctrl) {
 		requirements.put(opt.name(), opt.requires());
 
 		final Class<?>[] values = opt.values();
@@ -125,7 +144,10 @@ public abstract class UserCommand implements Command {
 					ValuePredicate<?> pred = (ValuePredicate<?>) predicate.newInstance();
 					optionResults.put(opt.name(), pred.check(input, irc, ctrl));
 				} catch (ParseException e) {
-					throw e;
+					if (opt.required())
+						throw e;
+					else
+						return false;
 				} catch (Exception e) {
 					throw new UserCommandError("Error running option " + opt.name() + " for user command " + name + " on " + input);
 				}
@@ -135,7 +157,11 @@ public abstract class UserCommand implements Command {
 					final Object enumInstance = method.invoke(null, input);
 					optionResults.put(opt.name(), enumInstance);
 				} catch (IllegalArgumentException e) {
-					throw new ParseException("Error trying to parse option: " + opt.name() + " expected one of: " + predicate.getEnumConstants(), e);
+					if (opt.required())
+						throw new ParseException("Error trying to parse option: " + opt.name() + " expected one of: " + predicate.getEnumConstants(),
+								e);
+					else
+						return false;
 				} catch (Exception e) {
 					throw new UserCommandError("Error Setting up: " + opt.name());
 				}
@@ -143,8 +169,9 @@ public abstract class UserCommand implements Command {
 				throw new UserCommandError("The UserCommand option" + opt.name() + " must either specify enum or a ValuePredicate");
 			}
 		}
+		return true;
 	}
 
-	public abstract void userAct(Map<String, ?> options, UserMessage msg, Pipe pipe, BotRegistry irc, Controller ctrl);
+	public abstract void userAct(Map<String, ?> options, UserMessage msg, Pipe pipe, BotRegistry irc, Controller ctrl, String remainder);
 
 }

@@ -1,41 +1,32 @@
 package jisssea.controller.commands;
 
-import static jisssea.util.IrcUtility.getCorrespondant;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
-import jisssea.controller.commands.api.RegexCommand;
+import jisssea.controller.Pipe;
+import jisssea.controller.Target;
+import jisssea.controller.commands.api.UserCommand;
 import jisssea.controller.messages.ActionMessage;
 import jisssea.controller.messages.UserMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ActionCommand extends RegexCommand {
+public class ActionCommand extends UserCommand {
 
 	private static final Log log = LogFactory.getLog(ActionCommand.class);
 
-	private static final Pattern p = Pattern.compile("/me (.*)");
-
 	@Override
-	protected Pattern pattern() {
-		return p;
-	}
+	public void userAct(Map<String, ?> options, UserMessage msg, Pipe pipe, BotRegistry irc, Controller ctrl, String remainder) {
+		final Target target = ctrl.getPipe(msg.getWindow()).getDefaultPredicate().getDefaultTarget();
 
-	@Override
-	protected void guardedAct(Matcher m, UserMessage msg, BotRegistry irc, Controller ctrl) {
-		final String actionBody = m.group(1);
-		final String target = ctrl.getPipe(msg.getWindow()).getDefaultPredicate().getDefaultCorrespondant();
-		final Bot network = irc.getTargetContext(target);
-		final String correspondant = getCorrespondant(target);
+		log.debug("ACTION: " + remainder + " - sending to - " + target);
 
-		log.debug("ACTION: " + actionBody + " - sending to - " + correspondant);
-
-		ctrl.message(new ActionMessage(network, network.getNick(), network.getLogin(), network.getName(), correspondant, actionBody));
-		network.sendAction(correspondant, actionBody);
+		final Bot network = target.getBot();
+		final String correspondant = target.getCorrespondant();
+		ctrl.message(new ActionMessage(network, network.getNick(), network.getLogin(), network.getName(), correspondant, remainder));
+		network.sendAction(correspondant, remainder);
 	}
 }

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -43,6 +44,7 @@ public class Controller {
 	private final BlockingQueue<Message> q;
 	private final List<Command> commands;
 	private final Map<Integer, Pipe> pipes;
+
 	private final InformationWindow infoWindow;
 
 	private int currentWindow;
@@ -93,7 +95,7 @@ public class Controller {
 
 	private void statusPipe() {
 		Pipe status = createPipe();
-		DefaultPredicate pred = new DefaultPredicate("");
+		DefaultPredicate pred = new DefaultPredicate();
 		pred.correspondants.clear();
 		pred.messageTypes.clear();
 		pred.messageTypes.addAll(Arrays.asList(MessageType.CONNECT, MessageType.DISCONNECT));
@@ -197,7 +199,7 @@ public class Controller {
 	 * @param attachedTo
 	 * @return
 	 */
-	public Pipe createPipe(String attachedTo) {
+	public Pipe createPipe(Target attachedTo) {
 		final Pipe pipe = createPipe();
 		DefaultPredicate pred = new DefaultPredicate(attachedTo);
 		pipe.predicates.add(pred);
@@ -245,11 +247,16 @@ public class Controller {
 		return null;
 	}
 
+	@Deprecated
 	public void foreachPipe(Procedure<Pipe> proc) {
 		for (Entry<Integer, Pipe> e : pipes.entrySet()) {
 			if (!proc.f(e.getValue()))
 				break;
 		}
+	}
+
+	public Set<Entry<Integer, Pipe>> getPipes() {
+		return pipes.entrySet();
 	}
 
 	public void closePipe(Pipe pipe) {

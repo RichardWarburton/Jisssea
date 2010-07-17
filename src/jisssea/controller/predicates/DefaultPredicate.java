@@ -14,8 +14,6 @@ import static jisssea.controller.messages.MessageType.TOPIC;
 import static jisssea.controller.messages.MessageType.USER_LIST;
 import static jisssea.controller.messages.MessageType.VOICE;
 import static jisssea.controller.messages.MessageType.WARNING;
-import static jisssea.util.IrcUtility.getCorrespondant;
-import static jisssea.util.IrcUtility.getNetwork;
 import static jisssea.util.IrcUtility.isValidChannel;
 
 import java.util.Arrays;
@@ -23,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jisssea.bot.Bot;
+import jisssea.controller.Target;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.MessageType;
 import jisssea.controller.messages.NickChangeMessage;
@@ -40,25 +39,29 @@ public class DefaultPredicate extends SimplePredicate {
 
 	private static final Log log = LogFactory.getLog(DefaultPredicate.class);
 
-	public final Set<String> correspondants;
+	public final Set<Target> correspondants;
 	public final Set<MessageType> messageTypes;
 
-	private String defaultCorrespondant;
+	private Target defaultTarget;
 
-	public String getDefaultCorrespondant() {
-		return defaultCorrespondant;
+	public Target getDefaultTarget() {
+		return defaultTarget;
 	}
 
-	public void setDefaultCorrespondant(String defaultCorrespondant) {
-		this.defaultCorrespondant = defaultCorrespondant;
+	public void setDefaultTarget(Target defaultTarget) {
+		this.defaultTarget = defaultTarget;
 	}
 
-	public DefaultPredicate(String correspondant) {
-		correspondants = new HashSet<String>();
-		correspondants.add(correspondant);
+	public DefaultPredicate() {
+		correspondants = new HashSet<Target>();
 		messageTypes = new HashSet<MessageType>();
+	}
+
+	public DefaultPredicate(Target t) {
+		this();
+		correspondants.add(t);
 		messageTypes.addAll(Arrays.asList(JOIN, PART, VOICE, PRIVATEMESSAGE, TOPIC, WARNING, ERROR, MESSAGE, KICK, LOG, ACTION, MODE, USER_LIST));
-		defaultCorrespondant = correspondant;
+		defaultTarget = t;
 	}
 
 	@Override
@@ -73,10 +76,10 @@ public class DefaultPredicate extends SimplePredicate {
 			final String newNick = ncm.getNewNick();
 			final Bot bot = ncm.getBot();
 			final String nick = bot.getNick();
-			for (String id : correspondants) {
-				final String maybeChan = getCorrespondant(id);
+			for (Target id : correspondants) {
+				final String maybeChan = id.getCorrespondant();
 				// same network
-				if (bot.getServerName().equals(getNetwork(id))) {
+				if (bot == id.getBot()) {
 					log.debug("same network");
 					if (isValidChannel(maybeChan)) {
 						log.debug("is a channel");

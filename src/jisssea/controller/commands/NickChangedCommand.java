@@ -1,18 +1,15 @@
 package jisssea.controller.commands;
 
 import static jisssea.controller.messages.MessageType.NICKCHANGE;
-
-import java.util.Set;
-
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
+import jisssea.controller.Target;
 import jisssea.controller.commands.api.Command;
 import jisssea.controller.messages.Message;
 import jisssea.controller.messages.NickChangeMessage;
 import jisssea.controller.predicates.DefaultPredicate;
 import jisssea.util.Procedure;
-import jisssea.util.StringUtility;
 
 /**
  * Updates all correspondants lists on a new change
@@ -31,10 +28,10 @@ public class NickChangedCommand implements Command {
 				@Override
 				public boolean f(Pipe a) {
 					final DefaultPredicate pred = a.getDefaultPredicate();
-					final Set<String> after = StringUtility.replaceAll(pred.correspondants, oldNick, newNick);
-					// TODO: think about less messy ideas
-					pred.correspondants.clear();
-					pred.correspondants.addAll(after);
+					for (Target target : pred.correspondants) {
+						if (target.getCorrespondant().equals(oldNick))
+							target.setCorrespondant(newNick);
+					}
 					return true;
 				}
 			});

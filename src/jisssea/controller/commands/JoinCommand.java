@@ -2,57 +2,39 @@ package jisssea.controller.commands;
 
 import static jisssea.util.IrcUtility.isValidChannel;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
-import jisssea.controller.commands.api.RegexCommand;
+import jisssea.controller.Target;
+import jisssea.controller.commands.api.Option;
+import jisssea.controller.commands.api.TargetPredicate;
+import jisssea.controller.commands.api.UserCommand;
 import jisssea.controller.messages.ErrorMessage;
 import jisssea.controller.messages.UserMessage;
 import jisssea.controller.predicates.DefaultPredicate;
-import jisssea.ui.DisplayWindow;
-import jisssea.util.IrcUtility;
 import jisssea.util.Procedure;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-/**
- * @author richard
- * 
- *         /join #bots
- * 
- */
-public class JoinCommand extends RegexCommand {
-
-	private static final Log log = LogFactory.getLog(JoinCommand.class);
-
-	private static final Pattern p = Pattern.compile("/join ([^ ]*)");
+public class JoinCommand extends UserCommand {
 
 	@Override
-	protected Pattern pattern() {
-		return p;
-	}
-
-	@Override
-	protected void guardedAct(Matcher m, UserMessage msg, BotRegistry irc, final Controller ctrl) {
-		DisplayWindow context = msg.getWindow();
-		final String channel = m.group(1);
+	@Option(name = "target", values = TargetPredicate.class)
+	public void userAct(Map<String, ?> options, UserMessage msg, Pipe originalPipe, BotRegistry irc, final Controller ctrl, String remainder) {
+		final Target target = (Target) options.get("target");
+		final String channel = target.getCorrespondant();
 
 		if (!isValidChannel(channel)) {
 			ctrl.message(new ErrorMessage("You must /join a valid channel name"));
 			return;
 		}
 
-		// TODO: generic networks
 		// check if channel exists
-		Bot bot = irc.get("uwcsnet");
+		Bot bot = target.getBot();
 		if (!bot.getChannelSet().contains(channel)) {
 			// create a new pipe with the default filter
-			Pipe pipe = ctrl.createPipe(bot.getServerName() + ":" + channel);
+			Pipe pipe = ctrl.createPipe(target);
 			ctrl.selectPipe(pipe);
 
 			// join the channel
@@ -64,9 +46,8 @@ public class JoinCommand extends RegexCommand {
 				@Override
 				public boolean f(Pipe pipe) {
 					final DefaultPredicate pred = pipe.getDefaultPredicate();
-					for (String s : pred.correspondants) {
-						String chan = IrcUtility.getCorrespondant(s);
-						if (chan.equals(channel))
+					for (Target t : pred.correspondants) {
+						if (t.getCorrespondant().equals(channel))
 							ctrl.selectPipe(pipe);
 						return false;
 					}

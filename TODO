@@ -6,13 +6,12 @@ core:
     Replace config with a perform
     Units Test
     Silver's note - +m +q people may not work for channels, patch pircbot
-	Implement UserCommand
-    Remove hacky String stuff "uwcsnet:#foo" etc
 
 Test:
-    update pm windows on change nick
+	
+	All commands
+
     multiple networks
-    
     reconnect
 
 commands:

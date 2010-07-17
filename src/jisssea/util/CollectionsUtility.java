@@ -48,6 +48,14 @@ public class CollectionsUtility {
 		throw new IllegalArgumentException("Cannot find element");
 	}
 
+	public static <K, V> V getOrDefault(Map<K, ?> map, K key, V defaultValue) {
+		final Object v = map.get(key);
+		if (v == null)
+			return defaultValue;
+		else
+			return (V) v;
+	}
+
 	public static <F, T> List<T> map(Collection<F> from, Function<F, T> func) {
 		List<T> to = new ArrayList<T>();
 		for (F f : from) {
