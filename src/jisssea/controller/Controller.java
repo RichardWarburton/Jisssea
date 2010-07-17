@@ -113,6 +113,7 @@ public class Controller {
 		return loadPlugins(Command.class, "bin", "jisssea.controller.commands");
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Command> T requestCommand(Class<T> cls) {
 		for (Command c : commands) {
 			if (c.getClass().equals(cls)) {

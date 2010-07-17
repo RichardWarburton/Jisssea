@@ -105,7 +105,7 @@ public class InformationWindow extends JPanel {
 	}
 
 	private void forceRedraw() {
-		hide();
-		show();
+		setVisible(true);
+		setVisible(false);
 	}
 }

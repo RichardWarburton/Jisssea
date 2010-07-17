@@ -48,6 +48,7 @@ public class CollectionsUtility {
 		throw new IllegalArgumentException("Cannot find element");
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <K, V> V getOrDefault(Map<K, ?> map, K key, V defaultValue) {
 		final Object v = map.get(key);
 		if (v == null)
