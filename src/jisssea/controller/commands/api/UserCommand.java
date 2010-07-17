@@ -5,11 +5,11 @@ import static jisssea.controller.messages.MessageType.USER;
 import static jisssea.util.StringUtility.join;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import jisssea.bot.Bot;
 import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
@@ -57,14 +57,15 @@ public abstract class UserCommand implements Command {
 	public UserCommand() {
 		try {
 			final Class<? extends UserCommand> cls = getClass();
-			final Method userAct = cls.getMethod("userAct", Map.class, Pipe.class, Bot.class, BotRegistry.class, Controller.class);
+			final Method userAct = cls.getMethod("userAct", Map.class, UserMessage.class, Pipe.class, BotRegistry.class, Controller.class,
+					String.class);
 			option = userAct.getAnnotation(Option.class);
 			options = userAct.getAnnotation(Options.class);
 			final Name annotation = cls.getAnnotation(Name.class);
 			if (annotation == null) {
-				final String className = cls.getName();
+				final String className = cls.getSimpleName();
 				if (className.endsWith("Command")) {
-					name = className.substring(0, className.length() - 6);
+					name = className.substring(0, className.length() - 7);
 				} else {
 					name = className;
 				}
@@ -90,18 +91,25 @@ public abstract class UserCommand implements Command {
 			String input = umsg.getInput();
 			final String[] split = input.split(" ");
 			if (split[0].toLowerCase().startsWith('/' + name.toLowerCase())) {
+				log.debug("Obtained user message: " + input + " checking for " + name + " arguments: " + Arrays.toString(split));
 				input = input.substring(name.length());
 				final Pipe pipe = ctrl.getPipe(umsg.getWindow());
 				final Map<String, Object> optionResults = new HashMap<String, Object>();
 				final Map<String, String[]> requirements = new HashMap<String, String[]>();
 				int i = 1;
 				try {
-					for (Option option : options.value()) {
-						if (split.length <= i && option.required()) {
-							throw new ParseException("Insufficient arguments for required options");
+					if (options != null) {
+						for (Option option : options.value()) {
+							if (i >= split.length) {
+								if (option.required()) {
+									throw new ParseException("Insufficient arguments for required options");
+								} else {
+									break;
+								}
+							}
+							if (checkOption(optionResults, requirements, option, split[i], pipe, irc, ctrl))
+								i++;
 						}
-						if (checkOption(optionResults, requirements, option, split[i], pipe, irc, ctrl))
-							i++;
 					}
 					for (Entry<String, String[]> e : requirements.entrySet()) {
 						if (optionResults.containsKey(e.getKey())) {
@@ -112,7 +120,7 @@ public abstract class UserCommand implements Command {
 							}
 						}
 					}
-					final String rem = (input.length() > i) ? join(" ", asList(input).subList(i, input.length() - 1)) : "";
+					final String rem = (split.length > i) ? join(" ", asList(split).subList(i, split.length)) : "";
 					userAct(optionResults, umsg, pipe, irc, ctrl, rem);
 				} catch (ParseException e) {
 					log.debug("ParseException:", e);
@@ -163,7 +171,7 @@ public abstract class UserCommand implements Command {
 					else
 						return false;
 				} catch (Exception e) {
-					throw new UserCommandError("Error Setting up: " + opt.name());
+					throw new UserCommandError("Error Setting up: " + opt.name(), e);
 				}
 			} else {
 				throw new UserCommandError("The UserCommand option" + opt.name() + " must either specify enum or a ValuePredicate");

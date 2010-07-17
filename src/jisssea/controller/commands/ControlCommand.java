@@ -27,7 +27,7 @@ public class ControlCommand extends UserCommand {
 
 	// private static final Log log = LogFactory.getLog(ControlCommand.class);
 
-	enum Command {
+	public enum Command {
 		kick, ban, unban, op, deop, voice, devoice
 	};
 

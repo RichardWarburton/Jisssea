@@ -160,8 +160,8 @@ public class Controller {
 				List<Message> visibleMsgs = visiblePipe.requestAll();
 				log.debug("Outputting " + visibleMsgs.size() + " msgs to window " + currentWindow + " of " + totalWindows);
 				window().printMessages(visibleMsgs);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				log.error("Error in main message queue", t);
 			}
 		}
 	}
@@ -248,7 +248,6 @@ public class Controller {
 		return null;
 	}
 
-	@Deprecated
 	public void foreachPipe(Procedure<Pipe> proc) {
 		for (Entry<Integer, Pipe> e : pipes.entrySet()) {
 			if (!proc.f(e.getValue()))

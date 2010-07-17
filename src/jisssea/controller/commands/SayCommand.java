@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author richard
  * 
- *         /join #bots
+ *         just normal typing messages into a channel
  * 
  */
 public class SayCommand extends RegexCommand {

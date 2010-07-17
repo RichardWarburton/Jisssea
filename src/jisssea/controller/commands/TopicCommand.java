@@ -19,9 +19,6 @@ import jisssea.controller.messages.Message;
 import jisssea.controller.messages.TopicMessage;
 import jisssea.controller.messages.UserMessage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * @author richard
  * 
@@ -32,9 +29,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class TopicCommand extends UserCommand {
 
-	private static final Log log = LogFactory.getLog(TopicCommand.class);
-
-	private final Map<String, String> topics = new HashMap<String, String>();
+	private final Map<Target, String> topics = new HashMap<Target, String>();
 
 	@Override
 	public void act(Message msg, BotRegistry irc, Controller ctrl) {
@@ -50,16 +45,19 @@ public class TopicCommand extends UserCommand {
 	@Override
 	@Option(name = "target", values = TargetPredicate.class, required = false)
 	public void userAct(Map<String, ?> options, UserMessage msg, Pipe pipe, BotRegistry irc, Controller ctrl, String remainder) {
-		final Target target = getOrDefault(options, "target", pipe.getDefaultPredicate().getDefaultTarget());
+		final Target defaultTarget = pipe.getDefaultPredicate().getDefaultTarget();
+		Target target = getOrDefault(options, "target", defaultTarget);
+		if (!target.isChannel()) {
+			remainder = target.getCorrespondant() + " " + remainder;
+			target = defaultTarget;
+		}
 		try {
 			final Bot bot = target.getBot();
-			final String channel = target.getCorrespondant();
-			bot.setTopic(channel, remainder);
-			topics.put(channel, remainder);
+			bot.setTopic(target.getCorrespondant(), remainder);
+			topics.put(target, remainder);
 		} catch (Exception e) {
 			log.error("Error setting topic", e);
 			ctrl.message(new ErrorMessage("Error setting topic: " + e.getMessage()));
 		}
 	}
-
 }

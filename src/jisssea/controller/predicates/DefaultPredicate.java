@@ -105,5 +105,4 @@ public class DefaultPredicate extends SimplePredicate {
 			}
 		}
 	}
-
 }

@@ -7,16 +7,13 @@ import jisssea.bot.BotRegistry;
 import jisssea.controller.Controller;
 import jisssea.controller.Pipe;
 import jisssea.controller.Target;
+import jisssea.controller.commands.api.Name;
 import jisssea.controller.commands.api.UserCommand;
 import jisssea.controller.messages.ActionMessage;
 import jisssea.controller.messages.UserMessage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+@Name("me")
 public class ActionCommand extends UserCommand {
-
-	private static final Log log = LogFactory.getLog(ActionCommand.class);
 
 	@Override
 	public void userAct(Map<String, ?> options, UserMessage msg, Pipe pipe, BotRegistry irc, Controller ctrl, String remainder) {

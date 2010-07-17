@@ -1,78 +1,81 @@
 package jisssea.controller.messages;
 
+import jisssea.controller.Target;
+
 public enum MessageType {
 	ERROR, LOG, WARNING, CONNECT, DISCONNECT, USER, MODE, ACTION {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			ActionMessage msg2 = (ActionMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getTarget();
+			return new Target(msg2.getBot(), msg2.getTarget());
 		}
 	},
 	JOIN {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			JoinMessage msg2 = (JoinMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getSender();
+			return new Target(msg2.getBot(), msg2.getSender());
 		}
 	},
 	MESSAGE {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			MessageMessage msg2 = (MessageMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getChannel();
+			return new Target(msg2.getBot(), msg2.getChannel());
 		}
 	},
 	KICK {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			KickMessage msg2 = (KickMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getKickerNick();
+			return new Target(msg2.getBot(), msg2.getKickerNick());
 		}
 	},
 	VOICE {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			VoiceMessage msg2 = (VoiceMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getSourceNick();
+			return new Target(msg2.getBot(), msg2.getSourceNick());
 		}
 	},
 	TOPIC {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			TopicMessage msg2 = (TopicMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getChannel();
+			return new Target(msg2.getBot(), msg2.getChannel());
 		}
 	},
 	NICKCHANGE {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			NickChangeMessage msg2 = (NickChangeMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getOldNick();
+			return new Target(msg2.getBot(), msg2.getOldNick());
 		}
 	},
 	PART {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			PartMessage msg2 = (PartMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getChannel();
+			return new Target(msg2.getBot(), msg2.getChannel());
 		}
 	},
 	PRIVATEMESSAGE {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			PrivateMessageMessage msg2 = (PrivateMessageMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getSender();
+			return new Target(msg2.getBot(), msg2.getSender());
 		}
 	},
 	USER_LIST {
 		@Override
-		public String origin(Message msg) {
+		public Target origin(Message msg) {
 			UserListMessage msg2 = (UserListMessage) msg;
-			return msg2.getBot().getServerName() + ":" + msg2.getChannel();
+			return new Target(msg2.getBot(), msg2.getChannel());
 		}
 	};
 
-	public String origin(Message msg) {
+	public Target origin(Message msg) {
 		throw new IllegalArgumentException();
 	}
+
 }

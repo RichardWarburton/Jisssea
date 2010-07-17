@@ -13,12 +13,7 @@ import jisssea.controller.commands.api.UserCommand;
 import jisssea.controller.messages.MessageMessage;
 import jisssea.controller.messages.UserMessage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class PMCommand extends UserCommand {
-
-	private static final Log log = LogFactory.getLog(PMCommand.class);
 
 	@Override
 	@Option(name = "target", values = TargetPredicate.class)
